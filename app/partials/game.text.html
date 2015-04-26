@@ -1,0 +1,547 @@
+<div class="row">
+
+	<span id="spot" class="spotlight" style="display: none"></span>
+	<div class="col-md-2 sidebar-left">
+		<div class="text-center gutter-10">Welcome, {{worker.workers_name}}</div>
+		<!--
+		<div class="text-center gutter-10 size-4">
+		  <img ng-src="img/{{levelIcon}}.png" width="64px" />
+		</div>
+		<h3 class="text-center topper-10">{{worker.workers_level.level_rank}}</h3>
+		<progressbar class="active progress-striped" value="worker.workers_completion" max="100">{{worker.workers_completion}}%</progressbar>
+		-->
+		<ul class="nav nav-pills nav-stacked">
+		  <li class="active">
+		    <a class="cursor">
+		      <span class="badge pull-right">{{workersScore.tagged_texts}}</span>
+		      Tagged Texts
+		    </a>
+		  </li>
+		  <li class="active">
+		    <a class="cursor"> 
+		      <span class="badge pull-right">{{workersScore.entities_found}}</span>
+		      Things Found
+		    </a>
+		  </li>
+                  <li class="active">
+                    <a class="cursor" ng-click="viewInstructions()">
+                      <span class="badge pull-right"></span>
+                      View Instructions
+                    </a>
+                  </li>
+		</ul>
+		<div class="gutter-10 topper-10" id="exit-code" style="display: none">
+			<div class="bold">Exit Code</div> <div id="exit-code-span"></div>
+		</div>
+		<div class="gutter-2"></div>
+
+
+		<!--
+                <div class="panel panel-primary">
+                      <div class="panel-heading nav-pills">
+                        <div class="active">Named Entities</div>
+                      </div>
+
+		      <div class="panel-body panel-body-slim text-center">
+			<div class="padding-10 float-left">
+			  A named entity is a phrase that uniquely refers to an object by its proper name (Hillary Clinton), acronym (IBM) or abbreviation (Minn.).
+			</div>
+		      </div>
+		</div>
+		-->
+
+
+		<!--
+		<div class="panel panel-primary">
+		      <div class="panel-heading nav-pills">
+			<div class="active">
+			  <a href="'">
+			  <span class="badge pull-right">{{(worker.workers_badges).length}}</span>
+			  </a>
+			  My Badges
+			</div>
+		      </div>
+		      <div class="panel-body panel-body-slim text-center">
+			<span ng-repeat="i in getNumber((worker.workers_badges).length) track by $index">
+			    <img ng-src="img/award{{$index+1}}.png" width="64px" class="badge-style cursor" />
+			</span>
+
+			<span ng-if="(worker.workers_badges).length < maxBadges1">
+                            <span ng-repeat="i in getNumber(maxBadges1 - (worker.workers_badges).length) track by $index">
+                                <img ng-src="img/locked-badge.png" width="64px" class="badge-style-locked" />
+                            </span>
+			</span>
+
+                        <span ng-if="(worker.workers_badges).length >= maxBadges1 && (worker.workers_badges).length < maxBadges2">
+                            <span ng-repeat="i in getNumber(maxBadges2 - (worker.workers_badges).length) track by $index">
+                                <img ng-src="img/locked-badge.png" width="64px" class="badge-style-locked" />
+                            </span>
+                        </span>
+
+                        <span ng-if="(worker.workers_badges).length >= maxBadges2 && (worker.workers_badges).length < maxBadges3">
+                            <span ng-repeat="i in getNumber(maxBadges3 - (worker.workers_badges).length) track by $index">
+                                <img ng-src="img/locked-badge.png" width="64px" class="badge-style-locked" />
+                            </span>
+                        </span>
+
+		      </div>
+		</div>
+		-->
+
+		<alert ng-repeat="messageAlert in messageAlerts" type="{{messageAlert.type}}" close="closeMessageAlert(0)"><span class="size-12px">{{messageAlert.title}}</span>
+			<hr class="narrow-hr" /><span class="size-12px">{{messageAlert.message}}</span>
+		</alert>
+	</div>
+
+        <div class="overlay z1100" id="overlay" style="display: none">
+        </div>
+
+
+
+
+	<div class="col-md-8 col-md-offset-2 main middle-background z1100">
+
+        <div ng-show="initializationStatus == 'incentivize'" class="text-center z999">
+            <br/><br/><br/>
+            <div class="shown_popup">
+                <div class="shown_popup_inner">
+                    <div class="onleft" style="text-align: center">
+                        <span class="popup_size1">{{incentiveMessageCluster[2]}}</span><br/>
+                        <span class="popup_size2">{{incentiveMessageCluster[3]}}</span></br>
+                        <span class="popup_size3">{{incentiveMessageCluster[4]}}</span><br/>
+                        <span class="popup_size2">{{incentiveMessageCluster[5]}}</span>
+                    </div>
+
+                    <div class="onright">
+                        <p class="sexy">{{incentiveMessageCluster[1]}}</p>
+                        <p class="lgrey">{{incentiveMessageCluster[0]}}</p>
+                        <button type="button" ng-click="hideFurtheranceIncentive()" class="btn btn-primary ng-scope" style="margin-bottom: 15px">
+                          &nbsp;&nbsp;Ok Thanks&nbsp;&nbsp;
+                        </button>
+                        <button type="button" ng-click="hideFurtheranceIncentive()" class="btn btn-default ng-scope" style="margin-bottom: 15px">
+                          &nbsp;&nbsp;No Thanks&nbsp;&nbsp;
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+	<div ng-show="initializationStatus == 'new'" class="text-center">
+		<span class="header-font size-xlarge">
+		To get started, click the button
+		</span><br>
+		<img ng-src="img/start-button.png" ng-click="getNextImage()"class="cursor"  id="playBtn" />
+		<br/>
+                <div class="header-font size-xlarge gutter-20">
+                <a ng-click="toggleInstructions()"><span class="white" id="instruction-title">Hide Instructions</span></a>
+                </div>
+
+		<div class="text-center">
+		<div id="instructions" class="instructions-background" style="display: block">
+                        <div class="instruction-navigation text-center">
+                                <a ng-click="showInstruction('prev')" ng-show="currentInstruction != 1">prev</a> | <a ng-click="showInstruction('next')" ng-show="currentInstruction != 5">next</a>
+                        </div>
+
+			<div id="gi-1" class="game-instructions">
+				<h3>Overview: Tagging Named Entities</h3>
+				<div>
+				<ul>
+				<!--<li>An entity is an object in the real world like a place or person-->
+				<li>A named entity is a phrase that uniquely refers to an object by its proper name.</li>
+				<li>You are required to tag at least ANY <b>10 (ten) tweets</b> with their entities.</li>
+				<!--</ul>
+				</div>
+				<br/>
+				<div>
+				<ul>-->
+				<li>Restaurants, Museums, Shopping Malls, Hospitals should be identified as (LOC)
+				<li>Universities, Schools and Sport Team should be identified as (ORG)
+				<li>Musical Bands should be identified as (ORG)
+				<li>Software such as Twitter, Facebook, Instagram and YouTube should be identified as (ORG)
+				<li>Identify longest entity e.g. "London Fashion Week" as (MISC) rather than London as a (LOC)
+				<li>Do not identify unnamed entities such as hair salon, bus stop, lunchroom, pool, gym, road
+				<li>Identify #hashtags and @mentions to appropriate types e.g. #WorldCup2014 is an event (MISC)
+				</ul>
+				</div>
+			</div>
+
+			<div id="gi-2" class="game-instructions" style="display: none">
+                        	<h3>Person (PER) entities</h3>
+				<div>
+				<ul>
+				<li>Names of humans (living deceased, fictional, deities etc). Includes names, nicknames, aliases</li> 
+				<li>Do NOT include titles or roles e.g., president, coach.</li>
+				<li>Include suffixes that are part of a name e.g. Jr., Sr., III.</li>
+				</ul>
+				</div>
+			</div>
+
+                        <div id="gi-3" class="game-instructions" style="display: none">
+                                <h3>Organisation (ORG) entities</h3>
+                                <div>
+                                <ul>
+                                <li>Includes corporations, institutions, government agencies, teams, military groups, stock tickers</li>
+                                <li>Some examples are NASDAQ, Manchester United, European Union, FBI, LA Lakers, GOP</li>
+				<li>Do NOT include generic entities like "the government" that doesn't name something specific.</li>
+                                </ul>
+                                </div>
+                        </div>
+
+                        <div id="gi-4" class="game-instructions" style="display: none">
+                                <h3>Location (LOC) entities</h3>
+				<ul>
+				<li>Includes cities, provinces, countries, international regions, bodies of water, mountains, etc</li>
+				<li>It also include man-made structures like airports, highways, streets, factories and monuments</li>
+				<li>Examples are London, Asia, the Adriatic Sea, French Alps, Heathrow Airport, Statue of Liberty</li>
+				</ul>
+                        </div>
+
+                        <div id="gi-5" class="game-instructions" style="display: none">
+                                <h3>Miscellaneous (MISC) entities</h3>
+                                <ul>
+                                <li>Includes movies, products, tv shows, songs, events, artworks, novels</li>
+                                <li>Other words or phrases that specifically name an object in the world</li>
+                                <li>Examples are iPhone 6, World War II, London Olympics</li>
+                                </ul>
+                        </div>
+
+			<div class="instruction-navigation text-center padding-10">
+				<a ng-click="showInstruction('prev')" ng-show="currentInstruction != 1">prev</a> | <a ng-click="showInstruction('next')" ng-show="currentInstruction != 5">next</a>
+			</div>
+		</div>
+		</div>
+
+
+	</div>
+
+
+        <div ng-show="initializationStatus == 'gameover'" class="text-center">
+		<br><span class="header-font size-xlarge">Game Over</span><br>
+		<div><img ng-src="img/wordsmith.png" /></div>
+
+		<div class="header-font size-xlarge">
+			You are The {{worker.workers_level.level_rank}}
+		</div><br>
+
+		<div class="header-font size-xxlarge rotate-10deg gold">
+			Congratulations
+		</div>
+		<div>
+			<span ng-repeat="i in getNumber(5) track by $index">
+				<span id="gameover-stars-{{$index}}" style="display: none; position: relative"><img ng-src="img/3dstar.png" /></span>
+			</span>
+		</div>
+	</div>
+
+
+        <div ng-show="initializationStatus == 'nextlevel'" class="text-center">
+                <div id="next-level-div" style="display: none">
+                        <div class="header-font size-xlarge">
+                                New level attained
+                        </div><br>
+                        <div class="header-font size-xxlarge rotate-10deg cursor" ng-click="startNextLevel()">
+                                {{worker.workers_level.level_rank}}
+                        </div>
+                        <div class="header-font size-xlarge cursor" ng-click="startNextLevel()">
+                                Click to continue
+                        </div>
+                </div>
+        </div>
+
+
+	<div ng-show="initializationStatus == 'viewInstructions'" class="instructions-background">
+		<h3 class="center">Overview: Tagging Named Entities</h3>
+                <div class="text-center"><a class="cursor" ng-click="backToGame()">go back to tagging</a><br/><br/></div>
+		<div>
+			<ul>
+				<li>A named entity is a phrase that uniquely refers to an object by its proper name.</li>
+				<li>You are required to tag at least ANY <b>10 (ten) tweets</b> with their entities.</li>
+				<li>Restaurants, Museums, Shopping Malls, Hospitals should be identified as (LOC)
+				<li>Universities, Schools and Sport Team should be identified as (ORG)
+				<li>Musical Bands should be identified as (ORG)
+				<li>Software such as Twitter, Facebook, Instagram and YouTube should be identified as (ORG)
+				<li>Identify longest entity e.g. "London Fashion Week" as (MISC) rather than London as a (LOC)
+				<li>Do not identify unnamed entities such as hair salon, bus stop, lunchroom, pool, gym, road
+				<li>Identify #hashtags and @mentions to appropriate types e.g. #WorldCup2014 is an event (MISC)
+			</ul>
+		</div>
+	</div>
+
+        <div ng-show="initializationStatus == 'recentimages'" class="text-center">
+		<h3>My Recently Tagged Images</h3>
+		<div class="text-center"><a class="cursor white" ng-click="backToGame()">go back to game</a><br/><br/></div>
+		<div ng-repeat="recentImage in recentWorkerImages">
+			<div class="float-left">
+				<img ng-src="../../turk_images/{{recentImage.image_name}}" height="280" class="jSlots-wrapper" />
+				&nbsp;&nbsp;&nbsp;
+			</div>
+			<div class="float-left" style="padding-top: 200px; text-align: left">
+				<span ng-repeat="i in getNumber(5) track by $index">
+                        	        <button type="button" class="btn wide-button" ng-show="recentImage.tags[$index] != ''">
+                        	            <span class="glyphicon glyphicon-tag"></span> {{recentImage.tags[$index]}}
+                        	        </button>
+				</span>
+				<br/><br/>
+				<a class="cursor" ng-click="backToGame()">go back to game</a>
+			</div>
+			<div class="float-clear">
+				<br/><br/>
+			</div>
+		</div>
+        </div>
+
+
+	<div ng-show="initializationStatus == 'old'" style="width: 850px; margin: 0px auto">
+	    <!--
+	    <div ng-class="{true: 'float-left reserved-words', false: 'float-left'}[maxRestrictedTags > 0]">
+		<div ng-show="maxRestrictedTags > 0" class="text-center bold">RESERVED</div>
+		<div ng-class="{true: '', false: ''}[maxRestrictedTags > 0]">
+	               	<div ng-repeat="tag in image.tags">
+				<button type="button" class="btn wide-button" ng-show="$index < maxRestrictedTags"
+					popover-placement="right" popover-trigger="mouseenter" 
+					popover="This is a reserved word">
+				    <span class="glyphicon glyphicon-remove"></span> {{image.tags[$index]}}
+				</button>
+			</div>
+		</div>
+	    </div>
+	    -->
+
+	    <div class="text-center drop-shadow lifted">
+		<div class="size-16px">Click on a word or phrase that names a <span ng-repeat="entityType in entityTypes">{{entityType}}, </span></div>
+		<div id="annotate" ng-bind-html="image.text_string" compile-template></div>
+		<div class="bold next-image-text cursor" ng-click="getNextImage()"><span>SKIP THIS TEXT</span></div>
+		<div id="user_current_entities" ng-bind-html="userCurrentEntities" class="align-left"  compile-template></div>
+	    </div>
+
+            <div id="main">
+              <div class="demo statemachine-demo view-entities" id="statemachine-demo" style="display: none">
+
+		<div class="gutter-10 topper-10 size-20px italic" id="mid-instructions">Connect the <span class="bold">black</span> (entity word) dot to the corresponding <span class="bold">yellow</span> (entity type) dot</div>
+                <div class="w w-ne sources" id="named_entity"><span class="bold">TEXT</span><div class="ep ep-ne"></div></div>
+
+		<div id="entity-types-container">
+		    <div ng-repeat="entityType in entityTypes" class="w targets" id="entity_{{entityType}}" ng-mouseover="showDescription(entityType)">
+	                <span class="size-20px">{{entityType}}</span><div class="ep"></div>
+		    </div>
+		</div>
+
+	      </div>
+
+	      <div class="view-entities" style="display: none">
+                <button type="button" ng-click="submitPlumb()" class="btn btn-primary" style="margin-bottom: 15px"><span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;Submit</button>
+                <button type="button" ng-click="cancelPlumb()" class="btn btn-danger" style="margin-bottom: 15px"><span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;Cancel</button>
+	      </div>
+            </div>
+
+
+
+	    <!--
+            <button type="button" class="btn wide-button">
+                <span class="glyphicon glyphicon-tags"></span>&nbsp;&nbsp;{{maxPoint}} points
+            </button>
+
+	    <button type="button" class="btn wide-button">
+		<span class="glyphicon glyphicon-time"></span> {{maxTime - counter}} s
+	    </button>
+
+	    <div class="gutter-20"></div>
+
+	    <progressbar class="active" value="counter" max="maxTime" type="{{progressType}}"></progressbar>
+		<form class="form-horizontal" role="form">
+
+		<div ng-repeat="i in getNumber(maxKeywords) track by $index">
+                  <div class="form-group {{tagState[$index]}} has-feedback">
+                    <label class="control-label col-sm-2" for="tag_{{$index}}">Enter Tag {{$index + 1}}</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="tag_{{$index}}" ng-model="keywords[$index]" ng-blur="validateTag($index)" ng-disabled="counter == maxTime">
+                      <span class="glyphicon {{tagGlyph[$index]}} form-control-feedback"></span>
+                    </div>
+                  </div>
+                  <div class="alert {{tagAlert[$index]}}">{{tagAlertText[$index]}}</div>
+		</div>
+
+
+                <div ng-show="current_control_text != ''">
+                  <div class="form-group {{controlTextState}} has-feedback">
+                    <label class="control-label col-sm-2" for="control_text">{{shorter_control_text}}</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="control_text" ng-model="workers_control_text" 
+			ng-blur="validateControlText()" ng-disabled="counter == maxTime" placeholder="{{current_control_text}}">
+                      <span class="glyphicon form-control-feedback {{controlTextGlyph}}"></span>
+                    </div>
+                  </div>
+                  <div class="alert {{controlTextAlert}}">{{controlTextAlertText}}</div>
+                </div>
+
+
+		  <div class="float-left">
+
+		  </div>
+
+		  <div class="float-right">
+		  <button type="button" class="btn btn-primary" ng-click="addUserImage()" popover="{{tagErrorMessage}}" 
+		      popover-placement="left" popover-trigger="focus" ng-hide="counter == maxTime" ng-show="counter < maxTime">
+		      &nbsp;&nbsp;Submit&nbsp;&nbsp;
+		  </button>
+		  <button type="button" class="btn btn-warning" ng-click="retryAddUserImage()" ng-show="counter == maxTime" ng-hide="counter < maxTime">
+		      &nbsp;&nbsp;Retry&nbsp;&nbsp;
+		  </button>
+		  <button type="button" class="btn btn-danger" ng-click="cancelImage()">&nbsp;&nbsp;Cancel&nbsp;&nbsp;</button>
+		  </div>
+		</form>
+	    -->
+
+
+	</div>
+
+	</div>
+
+
+
+
+
+	<div class="col-md-2 sidebar-right">
+                <div id="entity_software_description" class="description" style="display: none"></div>
+                <div id="entity_database_description" class="description" style="display: none"></div>
+                <div id="entity_library_description" class="description" style="display: none"></div>
+                <div id="entity_language_description" class="description" style="display: none"></div>
+
+
+		<div id="entity_person_description" class="description" style="display: none">
+<span class="bold">Person (PER) entities</span> are limited to humans (living, deceased, fictional, deities, ...) identified by name, nickname or alias. Don't include titles or roles (Ms., President, coach). Include suffixes.
+		</div>
+
+		<div id="entity_organisation_description" class="description" style="display: none">
+<span class="bold">Organisation (ORG) entities</span> include corporations, institutions, government agencies. E.g., businesses, stock tickers, multi-national organisations, political parties, sports teams, and military groups.
+		</div>
+                
+                <div id="entity_location_description" class="description" style="display: none">
+<span class="bold">Location (LOC) entities</span> includes cities, provinces, countries, international regions, bodies of water, mountains, man-made structures like airports, highways, streets, factories and monuments etc.
+		</div>
+
+                <div id="entity_miscellaneous_description" class="description" style="display: none">
+<span class="bold">Miscellaneous (MISC) entities</span> are other specifil real world objects e.g. movies (Avatar), products (iPhone 6), tv shows (Breaking Bad), events (World Cup), artworks (Mona Lisa), booksm novels etc.
+		</div>
+
+	</div>
+
+
+
+
+	<!--
+	<div class="col-md-3 sidebar-right">
+		<h3 class="text-center margintop-0 blue">
+		Leaderboard
+		</h3>
+		<table class="table table-condensed table-stripped size-14px">
+		    <thead>
+			<tr>
+			<th>#</th>
+			<th>Username</th>
+			<th>Rank</th>
+			<th><span class="float-right">Score</span></th>
+			</tr>
+		      </thead>
+		    <tbody>
+			<tr ng-repeat="leader in leaderboard" ng-class="{true: 'bold red', false: ''}[leader.workers_id == worker.workers_id]">
+			<td class="leaderboard-col1">{{$index + 1}}</td>
+			<td class="leaderboard-col2" ng-show="role == 'player'">
+			    {{leader.workers_name}}
+			</td>
+			<td class="leaderboard-col2" ng-show="role == 'master'">
+			    <a class="cursor" ng-click="findRecentWorkerImages(leader.workers_name)">
+			        {{leader.workers_name}}
+			    </a>
+			</td>
+			<td class="leaderboard-col3">{{(getWorkerLevel(leader.workers_inc)).level_rank}}</td>
+			<td class="leaderboard-col4"><span class="float-right">{{leader.workers_points}} <span class="activities-recency size-12px">pts</span></span></td>
+			</tr>
+
+			<tr ng-hide="worker.workers_position <= 5"><td colspan="4">...</td></tr>
+
+			<tr ng-hide="worker.workers_position <= 5" class="bold red">
+			<td class="leaderboard-col1">{{worker.workers_position}}</td>
+			<td class="leaderboard-col2">{{worker.workers_name}}</td>
+			<td class="leaderboard-col3">{{(getWorkerLevel(worker.workers_inc)).level_rank}}</td>
+			<td class="leaderboard-col4"><span class="float-right">{{worker.workers_points}} <span class="activities-recency size-12px">pts</span></span></td>
+			</tr>
+		    </tbody>
+		</table>
+
+		<div class="topper-20 gutter-20" id="newbadge-congrats" style="display: none">
+			<h3 class="text-center margintop-0 blue">
+			Congratulations
+			</h3>
+			<div class="text-center">
+				You have unlocked the <span class="bold">{{newBadgeName}}</span><br>
+				<span id="newbadge-div" style="display: none"><img ng-src="img/award{{(worker.workers_badges).length}}.png" /></span>
+			</div>
+		</div>
+		<div class="topper-20 gutter-20" id="enterleaderboard-congrats" style="display: none">
+			<h3 class="text-center margintop-0 blue">
+			Congratulations
+			</h3>
+			<div class="text-center">
+				You are now on <span class="bold">The Leaderboard</span><br>
+				<span id="enterleaderboard-div" style="display: none"><img ng-src="img/globe.png" /></span>
+			</div>
+		</div>
+		<div class="topper-20 gutter-20" id="climbleaderboard-congrats" style="display: none">
+			<h3 class="text-center margintop-0 blue">
+			Congratulations
+			</h3>
+			<div class="text-center">
+				You have climbed up <span class="bold">The Leaderboard</span><br>
+				<span id="climbleaderboard-div" style="display: none"><img ng-src="img/star.png" /></span>
+			</div>
+		</div>
+                <div class="topper-20 gutter-20" id="bonuspoints-congrats" style="display: none">
+                        <h3 class="text-center margintop-0 blue">
+                        Congratulations
+                        </h3>
+                        <div class="text-center">
+                                You have earned <span class="bold">{{bonusPointsName}}</span>bonus points <span class="italic">(+{{bonusPointsValue}} points)</span><br>
+				<span ng-repeat="i in getNumber(maxBonusPoints) track by $index">
+                                	<span id="bonus-points-{{$index}}" style="display: none"><img ng-src="img/coin.png" /></span>
+				</span>
+                        </div>
+                </div>
+                <div class="topper-20 gutter-20" id="bonustreasurepoints-congrats" style="display: none">
+                        <h3 class="text-center margintop-0 blue">
+                        Congratulations
+                        </h3>
+                        <div class="text-center">
+                                You have earned <span class="bold">{{bonusTreasurePointsName}}</span> treasure points <span class="italic">(+{{bonusTreasurePointsValue}} points)</span><br>
+                                <span id="bonustreasurepoints-div" style="display: none"><img ng-src="img/{{bonusTreasurePointsName}}.png" /></span>
+                        </div>
+                </div>
+
+		<div>
+			<div class="outer-curve">
+				<div class="float-left padding-10 white size-16px">Recent Activities</div>
+				<div class="float-right padding-12 white size-12px">What's this?</div>
+				<div class="inner-curve float-clear padding-10">
+
+					<div ng-repeat="activity in activities" class="activities-row">
+                                                <div class="activities-icon float-left"><span class="glyphicon glyphicon-user"></span></div>
+                                                <div class="activities-message float-left size-12px">
+                                                        <span class="bold">{{activity.workers_id}}</span> {{activity.action_done}} <span class="bold">{{activity.action_object}}</span>
+                                                        <div>
+								<span class="activities-recency">
+								{{getActivityRecency(activity.timestamp)}} ago
+								</span>
+							</div>
+                                                </div>
+                                                <div class="activities-badge float-right"><img src="img/{{activity.icon}}" width="100%"/></div>
+					</div>
+				</div>
+                                <div class="float-left padding-10 white size-12px">Freeze</div>
+                                <div class="float-right padding-10 white size-12px">How do I earn points?</div>
+			</div>
+		</div>
+	</div>
+	-->
+</div>

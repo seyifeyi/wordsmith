@@ -1,0 +1,45 @@
+<div id="login-holder">
+	<div class="container">
+		<section id="content">
+			<form action="">
+
+				<div id="register-form" ng-show="showForm == 'register'">
+					<h1>CrowdFlower ID</h1>
+                                        <!--
+					<div>
+                                                <input type="text" placeholder="Name" required="" id="reg-name" class="username" ng-model="regName" />
+                                        </div>
+					-->
+					<div style="clear: both; font-size: 13px; margin-bottom: 13px"><em>Enter your correct CrowdFlower ID to track your cash bonus</em><br/></div>
+                                        <div>
+                                                <input type="text" placeholder="Enter your CrowdFlower ID" id="reg-username" class="username" ng-model="regUsername" />
+                                        </div>
+                                        <div class="hidden">
+                                                <input type="password" placeholder="Password" id="reg-password" class="password" ng-model="regPassword" />
+                                        </div>
+                                        <div class="hidden">
+                                                <input type="password" placeholder="Confirm Password" id="reg-cpassword" class="password" ng-model="regCPassword" />
+                                        </div>
+
+	                                <div id="register-buttons">
+	                                        <input type="submit" value="Start" ng-click="register()" />
+						<!--
+	                                        <a href="#">Lost your password?</a>
+	                                        <a ng-click="showLogin()">Login</a>
+						-->
+	                                </div>
+				</div>
+
+			</form>
+
+                        <div ng-repeat="error in errors" class="errors">
+                        	<span class="red">{{error}}</span>
+                        </div>
+
+			<div class="button">
+				<a href="http://sociam.org/">Powered by SOCIAM</a>
+			</div>
+		</section>
+	</div>
+</div>
+

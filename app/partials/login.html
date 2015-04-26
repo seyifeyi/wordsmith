@@ -1,0 +1,64 @@
+<div id="login-holder">
+	<div class="container">
+		<section id="content">
+			<form action="">
+
+				<div id="login-form" ng-show="showForm == 'login'">
+					<h1>Login</h1>
+					<div>
+						<input type="text" placeholder="Enter a username" id="username" class="username" ng-model="username" />
+					</div>
+					<div class="hidden">
+						<input type="password" placeholder="Password" id="password" class="password" ng-model="password" />
+					</div>
+
+	                                <div id="login-buttons">
+	                                        <input type="submit" value="Log in" ng-click="login()" />
+						<!--
+	                                        <a href="#">Lost your password?</a>
+	                                        <a ng-click="showRegister()">Register</a>
+						-->
+	                                </div>
+					<div class="text-center">
+						<a ng-click="showRegister()">register</a>
+					</div>
+				</div>
+
+				<div id="register-form" ng-show="showForm == 'register'">
+					<h1>Enter Your Username</h1>
+                                        <!--
+					<div>
+                                                <input type="text" placeholder="Name" required="" id="reg-name" class="username" ng-model="regName" />
+                                        </div>
+					-->
+                                        <div>
+                                                <input type="text" placeholder="Username" id="reg-username" class="username" ng-model="regUsername" />
+                                        </div>
+                                        <div class="hidden">
+                                                <input type="password" placeholder="Password" id="reg-password" class="password" ng-model="regPassword" />
+                                        </div>
+                                        <div class="hidden">
+                                                <input type="password" placeholder="Confirm Password" id="reg-cpassword" class="password" ng-model="regCPassword" />
+                                        </div>
+
+	                                <div id="register-buttons">
+	                                        <input type="submit" value="Register" ng-click="register()" />
+	                                        <a href="#">Lost your password?</a>
+	                                        <a ng-click="showLogin()">Login</a>
+	                                </div>
+
+				</div>
+
+			</form>
+
+                        <div ng-repeat="error in errors" class="errors">
+                        	<span class="red">{{error}}</span>
+                        </div>
+
+			<div class="button">
+				<a href="http://sociam.org/">Powered by SOCIAM</a>
+			</div>
+		</section>
+	</div>
+</div>
+

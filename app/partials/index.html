@@ -1,0 +1,53 @@
+			<div class="col-md-7 col-md-offset-2 main">
+			<div ng-controller="PhoneListCtrl">
+                            <div class="float-left">
+                                <button type="button" class="btn wide-button">
+                                    <span class="glyphicon glyphicon-tags"></span> 250 points
+                                </button>
+                            </div>
+			    <div class="text-center gutter-10">
+			        <img src="img/pic1.jpg" width="40%" height="40%" />
+			    </div>
+                            <button type="button" class="btn wide-button">
+                                <span class="glyphicon glyphicon-time"></span> 2:50
+                            </button>
+			    <div class="gutter-20"></div>
+			    <progressbar class="active" value="counter" max="maxTime" type="{{progressType}}"></progressbar>
+				<form class="form-horizontal" role="form">
+				  <div class="form-group {{tagState[0]}} has-feedback">
+				    <label class="control-label col-sm-2" for="inputSuccess1">Enter Tag 1</label>
+				    <div class="col-sm-10">
+				      <input type="text" class="form-control" id="inputSuccess1" ng-model="tag_1">
+				      <span class="glyphicon {{tagGlyph[0]}} form-control-feedback"></span>
+				    </div>
+				  </div>
+				  <div class="alert {{tagAlert[0]}}">{{tagAlertText}}</div>
+
+                                  <div class="form-group {{tagState[1]}} has-feedback">
+                                    <label class="control-label col-sm-2" for="inputSuccess2">Enter Tag 2</label>
+                                    <div class="col-sm-10">
+                                      <input type="text" class="form-control" id="inputSuccess2" ng-model="tag_2">
+                                      <span class="glyphicon {{tagGlyph[1]}} form-control-feedback"></span>
+                                    </div>
+                                  </div>
+				  <div class="alert {{tagAlert[1]}}">{{tagAlertText}}</div>
+
+                                  <div class="form-group {{tagState[2]}} has-feedback">
+                                    <label class="control-label col-sm-2" for="inputSuccess3">Enter Tag 3</label>
+                                    <div class="col-sm-10">
+                                      <input type="text" class="form-control" id="inputSuccess3" ng-model="tag_3">
+                                      <span class="glyphicon {{tagGlyph[2]}} form-control-feedback"></span>
+                                    </div>
+                                  </div>
+				  <div class="alert {{tagAlert[2]}}">{{tagAlertText}}</div>
+				
+				  <div class="float-left">
+				  </div>
+				  <div class="float-right">
+				  <button type="button" class="btn btn-primary">&nbsp;&nbsp;Submit&nbsp;&nbsp;</button>
+				  <!--<button type="button" class="btn btn-warning">&nbsp;&nbsp;Retry&nbsp;&nbsp;</button>-->
+				  <button type="button" class="btn btn-danger">&nbsp;&nbsp;Cancel&nbsp;&nbsp;</button>
+				  </div>
+				</form>
+			</div>
+			</div>
